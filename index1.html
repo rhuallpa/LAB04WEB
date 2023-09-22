@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAB04 | DAWA-HUALLPA</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        form {
+            padding: 3rem;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            display: flex;
+            z-index: 20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-discussion" style="height: 100%;">
+        <div class="chat-message left" id="mensajes" style="display: none;"></div>
+        <form>
+            <input type="text" class="form-control" placeholder="Ingrese Mensaje">
+            <button class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <script>
+        let socket = io()
+        const form = document.querySelector('form')
+        const input = document.querySelector('input')
+        let mensajes = document.querySelector('div.chat-discussion')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            if (input.value) {
+                socket.emit('chat', input.value)
+                input.value = ''
+            }
+        })
+        var number = 0
+        socket.on('chat', (msg) => {
+            let item = document.createElement('div')
+            if (number % 2 == 0) {
+                item.classList.add("chat-message", "left")
+                item.id = "chat-message"
+                item.innerHTML = "<img style='border-radius:50%;' class=" + "'message-avatar'" + "src=" + "'img/a1.jpg' " + "><div class=" + "'message'" + ">" + "<span class=" + "'message-content'" + ">" + msg + "</span></div>"
+                mensajes.appendChild(item)
+                console.log(number)
+                number = number + 1
+            } else {
+                item.classList.add("chat-message", "right")
+                item.id = "chat-message"
+                item.innerHTML = "<img style='border-radius:50%;' class=" + "'message-avatar'" + "src=" + "'img/a4.jpg' " + "><div class=" + "'message'" + ">" + "<span class=" + "'message-content'" + ">" + msg + "</span></div>"
+                mensajes.appendChild(item)
+                console.log(number)
+                number = number + 1
+            }
+            window.scrollTo(0, document.body.scrollHeight)
+        })
+    </script>
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+</body>
+</html>
